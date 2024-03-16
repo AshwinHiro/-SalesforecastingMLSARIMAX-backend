@@ -277,7 +277,7 @@ def create_web_app():
         dt = datetime.datetime(2018, 1, 1)
         end = datetime.datetime(2018 + yearOffset, 12, 30, 23, 59, 59)
         step = datetime.timedelta(days=1)
-
+        print(dt,end,step)
         result = []
 
         while dt < end:
@@ -288,13 +288,23 @@ def create_web_app():
         
         result.rename(columns={0: 'date'}, inplace=True)
         
-        result.date = pd.to_datetime(result.date, format = "%Y-%m-%d")
+        print(result)
+
+        print("endline")
+        result.date = pd.to_datetime(result.date)
+
+        print("nextline")
+        print(result)
         
         result = pd.DataFrame(result)
 
         csvFile = pd.read_csv(file)
 
-        predictdata = csvFile.append(result,sort=False,ignore_index=True)
+        csvFile['date'] = pd.to_datetime(csvFile['date'])
+
+        predictdata = pd.concat([csvFile, result], ignore_index=True)
+
+        # predictdata = csvFile.append(result,sort=False,ignore_index=True)
         
         predictdata.date = pd.to_datetime(predictdata.date, format = "%Y-%m-%d")
 
